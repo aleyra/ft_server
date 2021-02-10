@@ -14,15 +14,14 @@ RUN	apt-get -y update && apt-get -y upgrade \
 		&& wget https://wordpress.org/wordpress-5.6.tar.gz
 
 COPY	./srcs .
-# les lignes commentees ne fonctionnent pas
+
 RUN	mkdir -p /var/www/html/phpmyadmin /etc/nginx/certificate /var/www/html/wordpress \
 		&& tar xvf phpMyAdmin-5.0.4-all-languages.tar.gz --strip-components=1 -C /var/www/html/phpmyadmin \
-#		&& mkdir -p /var/www/html/wordpress \
-		&& tar xzvf wordpress-5.6.tar.gz --strip-components=1 -C /var/www/html/wordpress
+		&& tar xzvf wordpress-5.6.tar.gz --strip-components=1 -C /var/www/html/wordpress \
 # config de Nginx
-RUN	rm -rf /etc/nginx/sites-enabled/default \
-		&& cp nginx.conf /etc/nginx/sites-enabled/
-RUN openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=www.example.com" -out /etc/nginx/certificate/nginx-certificate.crt -keyout /etc/nginx/certificate/nginx.key \
+		&& rm -rf /etc/nginx/sites-enabled/default /etc/nginx/sites-available/default \
+		&& cp nginx.conf /etc/nginx/sites-available/ \
+		&& openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=www.example.com" -out /etc/nginx/certificate/nginx-certificate.crt -keyout /etc/nginx/certificate/nginx.key \
 # config de mySQL
 		&& service mysql start \
 		&& mysql -u root < base.sql \
@@ -32,11 +31,11 @@ RUN openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -subj "/C=U
 		&& cp config.inc.php /var/www/html/phpmyadmin/ \
 # config de wordpress
 		&& cp config-localhost.php /var/www/html/wordpress \
-		&& cp wp.conf /etc/nginx
-RUN chown -R www-data:www-data /var/www/html \
+		&& cp wp.conf /etc/nginx \
+		&& chown -R www-data:www-data /var/www/html \
 		&& rm -rf base.sql config-localhost.php config.inc.php my.cnf nginx.conf wp.conf \
 		&& rm -rf phpMyAdmin-5.0.4-all-languages.tar.gz phpmyadmin.keyring wordpress-5.6.tar.gz
 
 EXPOSE	80 443
-#pb a la premier ligne
+
 CMD	sh run.sh
