@@ -21,7 +21,8 @@ RUN	mkdir -p /var/www/html/phpmyadmin /etc/nginx/certificate /var/www/html/wordp
 # config de Nginx
 		&& rm -rf /etc/nginx/sites-enabled/default /etc/nginx/sites-available/default \
 		&& cp nginx.conf /etc/nginx/sites-available/ \
-		&& openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=www.example.com" -out /etc/nginx/certificate/nginx-certificate.crt -keyout /etc/nginx/certificate/nginx.key \
+	# des copains :	&& openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=www.example.com" -out /etc/nginx/certificate/nginx-certificate.crt -keyout /etc/nginx/certificate/nginx.key \
+		&& openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=www.localhost" -out /etc/nginx/certificate/lburnet_localhost-certificate.crt -keyout /etc/nginx/certificate/lburnet_localhost.key \
 # config de mySQL
 		&& service mysql start \
 		&& mysql -u root < base.sql \
@@ -33,6 +34,7 @@ RUN	mkdir -p /var/www/html/phpmyadmin /etc/nginx/certificate /var/www/html/wordp
 		&& cp config-localhost.php /var/www/html/wordpress \
 		&& cp wp.conf /etc/nginx \
 		&& chown -R www-data:www-data /var/www/html \
+# nettoyage
 		&& rm -rf base.sql config-localhost.php config.inc.php my.cnf nginx.conf wp.conf \
 		&& rm -rf phpMyAdmin-5.0.4-all-languages.tar.gz phpmyadmin.keyring wordpress-5.6.tar.gz
 
