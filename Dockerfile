@@ -38,6 +38,8 @@ RUN	mkdir -p /var/www/html/phpmyadmin /etc/nginx/certificate /var/www/html/wordp
 		&& rm -rf base.sql config-localhost.php config.inc.php my.cnf nginx.conf wp.conf \
 		&& rm -rf phpMyAdmin-5.0.4-all-languages.tar.gz phpmyadmin.keyring wordpress-5.6.tar.gz
 
-EXPOSE	80 443
+EXPOSE	80
+
+EXPOSE	443
 
 CMD	sh run.sh
