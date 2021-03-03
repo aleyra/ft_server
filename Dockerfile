@@ -3,10 +3,6 @@ LABEL	maintainer="lburnet@student.42lyon.fr"
 
 # WORKDIR	/usr/src/ft_server
 
-# Vous devrez vous assurer que votre base de donnée SQL 
-#fonctionne avec le wordpress et phpmyadmin.
-#Vous devrez vous assurer que, selon l’url tapé, votre server redirige vers le bon site.
-#Vous devrez aussi vous assurer que votre serveur tourne avec un index automatique qui doit pouvoir être désactivable.
 RUN	apt-get -y update && apt-get -y upgrade \
 		&& apt-get -y install gnupg wget expect nginx openssl mariadb-server mariadb-client \
 		php7.3 php7.3-fpm php7.3-mysql php7.3-curl php7.3-mbstring php7.3-xml php7.3-gettext php7.3-cgi \
